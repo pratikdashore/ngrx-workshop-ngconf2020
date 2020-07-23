@@ -1,3 +1,4 @@
+import { BookApiEffects } from './books/books-api.effects';
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
@@ -23,7 +24,7 @@ import { AppComponent } from "./app.component";
     ]),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([BookApiEffects]),
     MaterialModule,
     AuthModule,
     BooksModule
