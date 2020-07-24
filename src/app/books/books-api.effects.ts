@@ -1,9 +1,11 @@
-import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  concatMap,
+  exhaustMap, map, mergeMap
+} from 'rxjs/operators';
 import { BooksService } from '../shared/services';
-import { BooksPageActions, BooksApiActions } from './actions';
+import { BooksApiActions, BooksPageActions } from './actions';
 
 @Injectable()
 export class BookApiEffects {
@@ -12,7 +14,7 @@ export class BookApiEffects {
   loadAllBooks$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BooksPageActions.enter),
-      mergeMap(() =>
+      exhaustMap(() =>
         this.booksService
           .all()
           .pipe(
@@ -25,7 +27,7 @@ export class BookApiEffects {
   createBook$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BooksPageActions.createBook),
-      mergeMap((action) =>
+      concatMap((action) =>
         this.booksService
           .create(action.book)
           .pipe(
@@ -38,7 +40,7 @@ export class BookApiEffects {
   updateBook$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BooksPageActions.updateBook),
-      mergeMap((action) =>
+      concatMap((action) =>
         this.booksService
           .update(action.bookId, action.book)
           .pipe(
